@@ -151,7 +151,7 @@ const Services = () => {
               className="group text-base"
             >
               <MessageCircle className="w-5 h-5 mr-2" />
-              Agendar Conserto via WhatsApp
+              Agendar Conserto
             </Button>
           </div>
         </motion.div>

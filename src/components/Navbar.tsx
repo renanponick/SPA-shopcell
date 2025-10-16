@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X, Smartphone } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        isScrolled || isMobileMenuOpen
           ? 'bg-background/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
@@ -43,9 +43,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+          <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => scrollToSection('#inicio')}
           >
@@ -55,29 +53,24 @@ const Navbar = () => {
             <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               TechCell
             </span>
-          </motion.div>
+          </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             {menuItems.map((item, index) => (
-              <motion.a
+              <a
                 key={item.href}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
                 onClick={() => scrollToSection(item.href)}
                 className="text-foreground/80 hover:text-primary transition-colors cursor-pointer font-medium"
               >
                 {item.label}
-              </motion.a>
+              </a>
             ))}
           </div>
 
           {/* Theme Toggle & Mobile Menu Button */}
           <div className="flex items-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
               aria-label="Toggle theme"
@@ -87,7 +80,7 @@ const Navbar = () => {
               ) : (
                 <Sun className="w-5 h-5" />
               )}
-            </motion.button>
+            </button>
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -107,25 +100,21 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+          <div
             className="md:hidden bg-background/95 backdrop-blur-md border-t border-border"
           >
             <div className="container mx-auto px-4 py-4 space-y-2">
               {menuItems.map((item) => (
-                <motion.a
+                <a
                   key={item.href}
-                  whileHover={{ x: 5 }}
                   onClick={() => scrollToSection(item.href)}
                   className="block py-2 px-4 rounded-lg hover:bg-secondary transition-colors cursor-pointer"
                 >
                   {item.label}
-                </motion.a>
+                </a>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </nav>
